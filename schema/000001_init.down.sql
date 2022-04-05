@@ -1,0 +1,3 @@
+DROP TABLE words;
+DROP TABLE users;
+DROP TABLE types;

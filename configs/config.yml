@@ -1,0 +1,9 @@
+port: "8000"
+db:
+  host: "localhost"
+  port: "5436"
+  username: "postgres"
+  name: "postgres"
+  sslmode: "disable"
+jwt:
+  token_ttl: 86400

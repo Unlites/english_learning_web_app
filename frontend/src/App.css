@@ -1,0 +1,15 @@
+.menu {
+  height: 60vh;
+}
+.title {
+  padding: 40px;
+}
+.item {
+  padding: 20px;
+  border: 1px solid;
+  border-radius: 5px;
+}
+.menu a {
+  color: black;
+  text-decoration: none;
+}
