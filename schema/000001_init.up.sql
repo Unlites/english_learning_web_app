@@ -3,7 +3,8 @@ CREATE TABLE users
     id serial NOT NULL unique,
     name varchar(255) NOT NULL,
     username varchar(255) NOT NULL unique,
-    password_hash varchar(255) NOT NULL
+    password_hash varchar(255) NOT NULL,
+    current_words varchar(255) NOT NULL default ''
 );
 
 CREATE TABLE types
@@ -19,5 +20,5 @@ CREATE TABLE words
     type_id int references types (id) on delete cascade NOT NULL,
     word varchar(255) NOT NULL,
     translation varchar(255) NOT NULL,
-    priority int NOT NULL default 1,
+    priority int NOT NULL default 1
 );

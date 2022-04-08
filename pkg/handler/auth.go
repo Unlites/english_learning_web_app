@@ -49,7 +49,7 @@ func (h *Handler) signIn(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("jwt", token, 3600, "/", "localhost", false, true)
+	c.SetCookie("jwt", token, 3600, "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",
@@ -58,7 +58,7 @@ func (h *Handler) signIn(c *gin.Context) {
 
 // Logout, removing token from cookie.
 func (h *Handler) logout(c *gin.Context) {
-	c.SetCookie("jwt", "", -1, "/", "localhost", false, true)
+	c.SetCookie("jwt", "", -1, "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",

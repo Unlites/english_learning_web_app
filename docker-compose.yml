@@ -4,11 +4,16 @@ services:
   app:
     build: ./
     command: ./wait-for-postgres.sh db ./english_learning_webapp
+    ports:
       - 8000:8000
     depends_on:
       - db
     environment:
       - DB_PASSWORD=qwerty
+  client:
+    build: ./frontend
+    ports:
+     - 3000:3000
   db:
     restart: always
     image: postgres:latest
