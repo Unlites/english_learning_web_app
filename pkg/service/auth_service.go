@@ -13,12 +13,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-	salt       = os.Getenv("SALT")
-	signingKey = os.Getenv("SIGNINGKEY")
-	tokenTTL   = viper.GetDuration("token_ttl")
-)
-
 type AuthService struct {
 	repo repository.Auth
 }
@@ -45,13 +39,13 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(tokenTTL).Unix(),
+			ExpiresAt: time.Now().Add(viper.GetDuration("token_ttl") * time.Second).Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
 		UserId: user.Id,
 	})
 
-	return token.SignedString([]byte(signingKey))
+	return token.SignedString([]byte(os.Getenv("SIGNINGKEY")))
 }
 
 func (s *AuthService) ParseToken(accessToken string) (int, error) {
@@ -61,7 +55,7 @@ func (s *AuthService) ParseToken(accessToken string) (int, error) {
 				return nil, errors.New("invalid signing method")
 			}
 
-			return []byte(signingKey), nil
+			return []byte(os.Getenv("SIGNINGKEY")), nil
 		})
 	if err != nil {
 		return 0, nil
@@ -77,5 +71,5 @@ func generatePasswordHash(password string) string {
 	hash := sha1.New()
 	hash.Write([]byte(password))
 
-	return fmt.Sprintf("%x", hash.Sum([]byte(salt)))
+	return fmt.Sprintf("%x", hash.Sum([]byte(os.Getenv("SALT"))))
 }

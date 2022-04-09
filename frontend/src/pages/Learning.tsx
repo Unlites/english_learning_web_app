@@ -9,7 +9,7 @@ const Learning: React.FC = () => {
     const [counter, setCounter] = useState<number>(1);
     const params = useParams<string>();
     const [translation, setTranslation] = useState<string>('');
-    const [priority, setPriority] = useState<number>(2);
+    const [priority, setPriority] = useState<number>(1);
     const [response, setResponse] = useState<string>('')
     const [redirectResponse, setRedirectResponse] = useState<boolean>(false)
 
@@ -61,7 +61,6 @@ const Learning: React.FC = () => {
                 } catch (e) {
                     alert(e)
                 }
-                console.log("Текущий приоритет " + word.priority + ". Понижаю на два, становится " + (word.priority - 2) + ".");
             }
             document.querySelector('form')?.reset()
             fetchWord()
