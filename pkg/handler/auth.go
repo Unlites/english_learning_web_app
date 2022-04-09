@@ -3,6 +3,7 @@ package handler
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/Unlites/english_learning_web_app/pkg/models"
 	"github.com/gin-gonic/gin"
@@ -13,12 +14,16 @@ func (h *Handler) signUp(c *gin.Context) {
 	var input models.User
 	if err := c.BindJSON(&input); err != nil {
 		log.Print(input)
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	id, err := h.services.Auth.CreateUser(input)
 	if err != nil {
+		if strings.Contains(err.Error(), "dublicate") {
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
+			return
+		}
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -45,6 +50,10 @@ func (h *Handler) signIn(c *gin.Context) {
 
 	token, err := h.services.Auth.GenerateToken(input.Username, input.Password)
 	if err != nil {
+		if strings.Contains(err.Error(), "no rows") {
+			newErrorResponse(c, http.StatusForbidden, err.Error())
+			return
+		}
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}

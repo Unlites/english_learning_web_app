@@ -72,17 +72,21 @@ func (h *Handler) createWord(c *gin.Context) {
 	}
 	typeId, err := strconv.Atoi(c.Param("type_id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		newErrorResponse(c, http.StatusInternalServerError, "invalid id param")
 		return
 	}
 
 	var input models.Word
 	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	id, err := h.services.Word.Create(userId, typeId, input)
 	if err != nil {
+		if err.Error() == "word already exists" {
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
+			return
+		}
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -100,7 +104,7 @@ func (h *Handler) getAllWords(c *gin.Context) {
 	}
 	typeId, err := strconv.Atoi(c.Param("type_id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		newErrorResponse(c, http.StatusInternalServerError, "invalid id param")
 		return
 	}
 	words, err := h.services.Word.GetAll(userId, typeId)
@@ -199,7 +203,7 @@ func (h *Handler) patchWordPriority(c *gin.Context) {
 	var input models.WordPriority
 	err = c.BindJSON(&input)
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	err = h.services.PatchPriority(userId, wordId, input.Priority)
@@ -238,7 +242,7 @@ func (h *Handler) updateWord(c *gin.Context) {
 	var input models.Word
 	err = c.BindJSON(&input)
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 	}
 
 	err = h.services.Update(userId, wordId, input)

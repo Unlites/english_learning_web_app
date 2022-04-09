@@ -14,11 +14,15 @@ const Menu: React.FC = () => {
     const logout = async (e: SyntheticEvent) => {
         e.preventDefault();
         
-        await fetch("http://localhost:8000/auth/logout", {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            credentials: "include",
-        });
+        try { 
+            await fetch("http://localhost:8000/auth/logout", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                credentials: "include",
+            });
+        } catch (e) {
+            alert(e);
+        }
 
         setRedirect(true);
     }
