@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 	"strings"
 
@@ -13,7 +12,6 @@ import (
 func (h *Handler) signUp(c *gin.Context) {
 	var input models.User
 	if err := c.BindJSON(&input); err != nil {
-		log.Print(input)
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -58,7 +56,7 @@ func (h *Handler) signIn(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("jwt", token, 3600, "/", "", false, true)
+	c.SetCookie("jwt", token, 86400, "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",

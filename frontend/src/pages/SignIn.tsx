@@ -23,7 +23,6 @@ const SignIn: React.FC = () => {
                 },
                 QueryOptions);
         } catch (error: any) {
-            console.error(error)
             if (error.message.includes("403")) {
                 alert("Incorrect login or password.");
                 return

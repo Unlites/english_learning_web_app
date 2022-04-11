@@ -66,7 +66,7 @@ const AddWords: React.FC = () => {
                             onChange={e => setTraslation(e.target.value.toLowerCase().split(' ').join(''))}
                         />
                     </div>
-                    <div className="d-flex justify-content-between mx-0">
+                    <div className="row d-flex justify-content-between mx-0 gy-2">
                         <button onClick={submit} className="btn btn-outline-success col-md-5 col-12">Add</button>
                         <Link to="/menu" className="btn btn-outline-danger col-md-5 col-12">Exit</Link>
                     </div>
