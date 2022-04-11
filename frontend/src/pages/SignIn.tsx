@@ -8,6 +8,7 @@ const SignIn: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(false);
+    const [redirectHome, setRedirectHome] = useState(false);
     const Auth = useAuth();
 
     const submit = async (e: SyntheticEvent) => {
@@ -21,9 +22,14 @@ const SignIn: React.FC = () => {
                     password: password
                 },
                 QueryOptions);
-        } catch (error) {
-            alert("Incorrect login or password.")
-            return
+        } catch (error: any) {
+            if (error.message.includes("403")) {
+                alert("Incorrect login or password.");
+                return
+            } else {
+                alert("Internal server error. Please try later.");
+                setRedirectHome(true);                
+            }
         }
         setRedirect(true);
         Auth?.signIn()
@@ -31,6 +37,10 @@ const SignIn: React.FC = () => {
 
     if (redirect) {
         return <Navigate to="/menu"/>
+    }
+
+    if (redirectHome) {
+        return <Navigate to="/"/>
     }
 
     return (
@@ -41,13 +51,13 @@ const SignIn: React.FC = () => {
                     <div className="mb-3">
                         <label className="form-label">Login</label>
                         <input type="login" className="form-control" required
-                            onChange={e => setUsername(e.target.value)}
+                            onChange={e => setUsername(e.target.value.toLowerCase().split(' ').join(''))}
                         />
                     </div>
                     <div className="mb-4">
                         <label className="form-label">Password</label>
                         <input type="password" className="form-control" required
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={e => setPassword(e.target.value.toLowerCase().split(' ').join(''))}
                         />
                     </div>
                     <div className="d-flex justify-content-center mx-0">

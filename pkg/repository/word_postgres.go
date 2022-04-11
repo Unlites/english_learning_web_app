@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -17,8 +18,14 @@ func NewWordPostgres(db *sqlx.DB) *WordPostgres {
 }
 
 func (r *WordPostgres) Create(userId, typeId int, word models.Word) (int, error) {
+	var wordExist string
+	query := fmt.Sprintf("SELECT word FROM %s WHERE user_id = $1 AND word = $2", wordsTable)
 	var id int
-	query := fmt.Sprintf("INSERT INTO %s (user_id, type_id, word, translation) values ($1, $2, $3, $4) RETURNING id", wordsTable)
+	err := r.db.Get(&wordExist, query, userId, word.Word)
+	if err == nil {
+		return 0, errors.New("word already exists")
+	}
+	query = fmt.Sprintf("INSERT INTO %s (user_id, type_id, word, translation) values ($1, $2, $3, $4) RETURNING id", wordsTable)
 	row := r.db.QueryRow(query, userId, typeId, word.Word, word.Translation)
 	if err := row.Scan(&id); err != nil {
 		return 0, err

@@ -9,9 +9,15 @@ const Learning: React.FC = () => {
     const [counter, setCounter] = useState<number>(1);
     const params = useParams<string>();
     const [translation, setTranslation] = useState<string>('');
-    const [priority, setPriority] = useState<number>(2);
-    const [response, setResponse] = useState<string>('')
-    const [redirectResponse, setRedirectResponse] = useState<boolean>(false)
+    const [priority, setPriority] = useState<number>(1);
+    const [response, setResponse] = useState<string>('');
+    const [redirect, setRedirect] = useState(false);
+    const [redirectResponse, setRedirectResponse] = useState<boolean>(false);
+    const [needRemind, setNeedRemind] = useState<boolean>(false);
+    const [result, setResult] = useState<boolean>(false);
+    var remindedWord:string | undefined = undefined;
+    const [successMessage, setSuccessMessage] = useState<string>('');
+    const [failedMessage, setFailedMessage] = useState<string>('');
 
 
     useEffect(() => {
@@ -42,12 +48,14 @@ const Learning: React.FC = () => {
                 setRedirectResponse(true);
             } else {
                 alert(e);
+                setRedirect(true);
             }
 
         }
     }
     const checkWord = async (e: SyntheticEvent) => {
         e.preventDefault();
+        setNeedRemind(false);
         if (translation === word?.translation) {
             setCounter(counter + 1);
             if (word.priority !== 0) {
@@ -61,14 +69,36 @@ const Learning: React.FC = () => {
                 } catch (e) {
                     alert(e)
                 }
-                console.log("Текущий приоритет " + word.priority + ". Понижаю на два, становится " + (word.priority - 2) + ".");
             }
+            setSuccessMessage("Correct!")
+            setResult(true)
             document.querySelector('form')?.reset()
             fetchWord()
         } else {
-            alert("Incorrect! Try again.")
+            setFailedMessage("Incorrect!")
+            setResult(true)
         }
 
+    }
+
+    const remindWord = () => {
+        setNeedRemind(true);
+    }
+
+    if (result) {
+        setTimeout(() => {
+            setSuccessMessage("")
+            setFailedMessage("")
+            setResult(false)
+         }, 2000);
+    }
+
+    if (needRemind) {
+        remindedWord = "- " + word?.translation
+    }
+
+    if (redirect) {
+        return <Navigate to="/menu"/>
     }
 
     if (redirectResponse) {
@@ -86,15 +116,22 @@ const Learning: React.FC = () => {
                 </div>
             <div className="mb-3">
                 <h3 className="form-label text-center">
-                    {word?.word}
+                    {word?.word} {remindedWord}
                 </h3>
-                {/* <img src="правый.png" className="rounded img-fluid" alt="..."> */}
               </div>
+              <h4 className="form-label text-center">
+                  <span className="text-success">{successMessage}</span>
+                  <span className="text-danger">{failedMessage}</span>
+                  &nbsp;
+              </h4>
             <form id="form">
                 <div className="mb-3">
+                  <div className="d-flex justify-content-between">
                   <label className="form-label">Translate word</label>
-                  <input className="form-control" required
-                    onChange={e => setTranslation(e.target.value)}
+                  <div onClick={remindWord} className="py-1 px-1 btn btn-outline-success col-md-1 col-1 text-center">?</div>
+                  </div>
+                  <input className="my-1 form-control" required
+                    onChange={e => setTranslation(e.target.value.toLowerCase().split(' ').join(''))}
                   />
                 </div>
                 <div className="mb-3">
@@ -102,7 +139,7 @@ const Learning: React.FC = () => {
                   <textarea className="form-control" rows = {2} ></textarea>
                 </div>
                 <div className="row d-flex justify-content-between mx-0 gy-2">
-                    <button onClick={checkWord} className="btn btn-outline-dark col-md-5 col-12">Check</button>    
+                    <button onClick={checkWord} className="btn btn-outline-dark col-md-5 col-12">Check</button>     
                     <Link to="/menu" className="btn btn-outline-danger col-md-5 col-12">Exit</Link>
                 </div>
             </form>

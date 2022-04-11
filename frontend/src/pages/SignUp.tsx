@@ -23,10 +23,11 @@ const SignUp: React.FC = () => {
                 },
                 QueryOptions);
         } catch (error: any) {
-            if (error.message.indexOf("dublicate")) {
+            if (error.message.includes("400")) {
                 alert("This login is already in use");
             } else {
-                alert("Internal server error. Please try later.");                
+                alert("Internal server error. Please try later.");
+                setRedirect(true);                
             }
 
             return
@@ -54,19 +55,19 @@ const SignUp: React.FC = () => {
                     <div className="mb-3">
                         <label className="form-label">Name</label>
                         <input type="login" className="form-control" required
-                            onChange={e => setName(e.target.value)}
+                            onChange={e => setName(e.target.value.toLowerCase().split(' ').join(''))}
                         />
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Login</label>
                         <input type="login" className="form-control" required
-                            onChange={e => setUsername(e.target.value)}
+                            onChange={e => setUsername(e.target.value.toLowerCase().split(' ').join(''))}
                         />
                     </div>
                     <div className="mb-4">
                         <label className="form-label">Password</label>
                         <input type="password" className="form-control" required
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={e => setPassword(e.target.value.toLowerCase().split(' ').join(''))}
                         />
                     </div>
                     <div className="row d-flex justify-content-center mx-0">
