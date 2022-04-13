@@ -16,7 +16,7 @@ const SignIn: React.FC = () => {
         
         try {
             await axios.post<User>(
-                "http://localhost:8000/auth/sign_in",
+                `http://${process.env.REACT_APP_API_URL}/auth/sign_in`,
                 {
                     username: username,
                     password: password

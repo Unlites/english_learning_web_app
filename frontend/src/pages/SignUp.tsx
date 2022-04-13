@@ -15,7 +15,7 @@ const SignUp: React.FC = () => {
         
         try {
             await axios.post<User>(
-                "http://localhost:8000/auth/sign_up",
+                `http://${process.env.REACT_APP_API_URL}/auth/sign_up`,
                 {   
                     name: name,
                     username: username,

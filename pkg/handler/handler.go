@@ -4,6 +4,7 @@ import (
 	"github.com/Unlites/english_learning_web_app/pkg/service"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 // Handler to work with incoming requests.
@@ -21,7 +22,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	// CORS Settings.
 	router.Use(cors.New(cors.Config{
 		AllowMethods:     []string{"PATCH"},
-		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowOrigins:     []string{viper.GetString("client_url")},
 		AllowCredentials: true,
 		AllowHeaders:     []string{"Content-Type"},
 	}))
