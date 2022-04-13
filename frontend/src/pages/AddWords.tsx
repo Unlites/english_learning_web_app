@@ -16,7 +16,7 @@ const AddWords: React.FC = () => {
 
         try {
             await axios.post<Word>(
-                `http://localhost:8000/api/wordlist/types/${params.type_id}/words`,
+                `http://${process.env.REACT_APP_API_URL}/api/wordlist/types/${params.type_id}/words`,
                 {
                     word: word,
                     translation: translation

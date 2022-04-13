@@ -38,7 +38,7 @@ const Learning: React.FC = () => {
         }
         try {
             const response = await axios.get<Word>(
-                `http://localhost:8000/api/wordlist/types/${params.type_id}/words/${priority}`,
+                `http://${process.env.REACT_APP_API_URL}/api/wordlist/types/${params.type_id}/words/${priority}`,
                 QueryOptions);
             setWord(response.data);
 
@@ -61,7 +61,7 @@ const Learning: React.FC = () => {
             if (word.priority !== 0) {
                 try {
                     await axios.patch<Word>(
-                    `http://localhost:8000/api/wordlist/words/${word.id}`,
+                    `http://${process.env.REACT_APP_API_URL}/api/wordlist/words/${word.id}`,
                     {
                         priority: word.priority - 1
                     },
