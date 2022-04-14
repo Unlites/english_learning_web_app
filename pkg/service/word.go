@@ -32,6 +32,10 @@ func (s *WordService) GetById(userId, wordId int) (models.Word, error) {
 	return s.repo.GetById(userId, wordId)
 }
 
+func (s *WordService) GetByWord(userId int, input string) (models.Word, error) {
+	return s.repo.GetByWord(userId, input)
+}
+
 func (s *WordService) GetRandomWordByPriority(userId, typeId, priority int) (models.Word, error) {
 	return s.repo.GetRandomWordByPriority(userId, typeId, priority)
 }

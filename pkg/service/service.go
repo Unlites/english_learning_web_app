@@ -21,6 +21,7 @@ type Word interface {
 	Create(userId, typeId int, word models.Word) (int, error)
 	GetAll(userId, typeId int) ([]models.Word, error)
 	GetById(userId, wordId int) (models.Word, error)
+	GetByWord(userId int, input string) (models.Word, error)
 	GetRandomWordByPriority(userId, typeId, priority int) (models.Word, error)
 	Delete(userId, wordId int) error
 	Update(userId, wordId int, input models.Word) error

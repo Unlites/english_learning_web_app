@@ -49,6 +49,14 @@ func (r *WordPostgres) GetById(userId, wordId int) (models.Word, error) {
 	return word, err
 }
 
+func (r *WordPostgres) GetByWord(userId int, input string) (models.Word, error) {
+	var word models.Word
+	query := fmt.Sprintf("SELECT * FROM %s WHERE user_id = $1 AND word = $2", wordsTable)
+	err := r.db.Get(&word, query, userId, input)
+
+	return word, err
+}
+
 func (r *WordPostgres) GetRandomWordByPriority(userId, typeId, priority int) (models.Word, error) {
 	var word models.Word
 	query := fmt.Sprintf("SELECT * FROM %s WHERE user_id = $1 AND type_id = $2 AND priority = $3 ORDER BY random() LIMIT 1", wordsTable)
@@ -71,8 +79,8 @@ func (r *WordPostgres) Delete(userId, wordId int) error {
 }
 
 func (r *WordPostgres) Update(userId, wordId int, word models.Word) error {
-	query := fmt.Sprintf("UPDATE %s SET word = $1, translation = $2, priority = $3 WHERE user_id = $4 AND id = $5", wordsTable)
-	_, err := r.db.Exec(query, word.Word, word.Translation, word.Priority, userId, wordId)
+	query := fmt.Sprintf("UPDATE %s SET word = $1, translation = $2 WHERE user_id = $3 AND id = $4", wordsTable)
+	_, err := r.db.Exec(query, word.Word, word.Translation, userId, wordId)
 
 	return err
 }
