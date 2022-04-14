@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/Unlites/english_learning_web_app/pkg/models"
 	"github.com/gin-gonic/gin"
@@ -136,6 +137,25 @@ func (h *Handler) getWordById(c *gin.Context) {
 		return
 	}
 
+	c.JSON(http.StatusOK, word)
+}
+
+func (h *Handler) getWordByWord(c *gin.Context) {
+	userId, err := h.getUserId(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	input := c.Param("word")
+	word, err := h.services.Word.GetByWord(userId, input)
+	if err != nil {
+		if strings.Contains(err.Error(), "no rows in result set") {
+			newErrorResponse(c, http.StatusNotFound, "word is not exist")
+			return
+		}
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
 	c.JSON(http.StatusOK, word)
 }
 

@@ -21,7 +21,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	// CORS Settings.
 	router.Use(cors.New(cors.Config{
-		AllowMethods:     []string{"PATCH"},
+		AllowMethods:     []string{"PATCH", "DELETE", "PUT"},
 		AllowOrigins:     []string{viper.GetString("client_url")},
 		AllowCredentials: true,
 		AllowHeaders:     []string{"Content-Type"},
@@ -63,12 +63,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 				}
 			}
-			words := wordlist.Group("/words")
+			words := wordlist.Group("/words/")
 			{
 				words.GET("/:id", h.getWordById)
 				words.PUT("/:id", h.updateWord)
 				words.PATCH("/:id", h.patchWordPriority)
 				words.DELETE("/:id", h.deleteWord)
+				words.GET("/search/:word", h.getWordByWord)
 			}
 		}
 	}
