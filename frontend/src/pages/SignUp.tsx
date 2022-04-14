@@ -70,7 +70,7 @@ const SignUp: React.FC = () => {
                             onChange={e => setPassword(e.target.value.toLowerCase().split(' ').join(''))}
                         />
                     </div>
-                    <div className="row d-flex justify-content-center mx-0">
+                    <div className="d-flex justify-content-center mx-0">
                         <button type="submit" className="btn btn-outline-dark col-md-5 col-12">Sign up</button>
                     </div>
                 </form>

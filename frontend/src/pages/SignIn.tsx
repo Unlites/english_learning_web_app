@@ -47,7 +47,7 @@ const SignIn: React.FC = () => {
         <div className="container">
             <h1 className="title text-center">Sign in</h1>
             <div className="menu col-md-5 mx-auto">
-                <form>
+                <form onSubmit={submit}>
                     <div className="mb-3">
                         <label className="form-label">Login</label>
                         <input type="login" className="form-control" required
@@ -61,7 +61,7 @@ const SignIn: React.FC = () => {
                         />
                     </div>
                     <div className="d-flex justify-content-center mx-0">
-                        <button onClick={submit} className="btn btn-outline-success col-md-5 col-12">Sign in</button>
+                        <button type="submit" className="btn btn-outline-success col-md-5 col-12">Sign in</button>
                     </div>
 
                 </form>

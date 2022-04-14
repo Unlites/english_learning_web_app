@@ -25,7 +25,7 @@ const AddWords: React.FC = () => {
                 document.querySelector('form')?.reset()
                 setSuccess(true);
         } catch (error : any) {
-            if (error.message.includes(400)) {
+            if (error.message.includes(501)) {
                 alert("Word is already exist!");
                 document.querySelector('form')?.reset()
                 return
@@ -53,7 +53,7 @@ const AddWords: React.FC = () => {
             <h1 className="title text-center">Add word</h1>
             <h3 className="form-label text-center text-success">{successMessage}&nbsp;</h3>
             <div className="menu col-md-5 mx-auto">
-                <form>
+                <form onSubmit={submit}>
                     <div className="mb-3">
                         <label className="form-label">Word</label>
                         <input className="form-control" required
@@ -67,7 +67,7 @@ const AddWords: React.FC = () => {
                         />
                     </div>
                     <div className="row d-flex justify-content-between mx-0 gy-2">
-                        <button onClick={submit} className="btn btn-outline-success col-md-5 col-12">Add</button>
+                        <button type="submit" className="btn btn-outline-success col-md-5 col-12">Add</button>
                         <Link to="/menu" className="btn btn-outline-danger col-md-5 col-12">Exit</Link>
                     </div>
 

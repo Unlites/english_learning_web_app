@@ -124,7 +124,7 @@ const Learning: React.FC = () => {
                   <span className="text-danger">{failedMessage}</span>
                   &nbsp;
               </h4>
-            <form id="form">
+            <form id="form" onSubmit={checkWord}>
                 <div className="mb-3">
                   <div className="d-flex justify-content-between">
                   <label className="form-label">Translate word</label>
@@ -139,7 +139,7 @@ const Learning: React.FC = () => {
                   <textarea className="form-control" rows = {2} ></textarea>
                 </div>
                 <div className="row d-flex justify-content-between mx-0 gy-2">
-                    <button onClick={checkWord} className="btn btn-outline-dark col-md-5 col-12">Check</button>     
+                    <button type="submit" className="btn btn-outline-dark col-md-5 col-12">Check</button>     
                     <Link to="/menu" className="btn btn-outline-danger col-md-5 col-12">Exit</Link>
                 </div>
             </form>
