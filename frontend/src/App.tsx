@@ -10,6 +10,7 @@ import Learning from './pages/Learning';
 import AddWords from './pages/AddWords';
 import ChooseType from './pages/ChooseType';
 import Response from './pages/Response';
+import ChangeWord from './pages/ChangeWord';
 
 
 function App() {
@@ -29,6 +30,9 @@ function App() {
               } />
               <Route path="/add_words/:type_id" element={
                 <RequireAuth><AddWords/></RequireAuth>
+              } />
+              <Route path="/change_word/" element={
+                <RequireAuth><ChangeWord/></RequireAuth>
               } />
               <Route path="/choose_type/" element={
                 <RequireAuth><ChooseType/></RequireAuth>

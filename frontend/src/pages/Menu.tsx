@@ -37,6 +37,7 @@ const Menu: React.FC = () => {
             <div className="menu vstack gap-3 col-md-6 text-center mx-auto">
                 <Link to="/choose_type" state={{useCase: "learning"}}><div className="item btn-outline-dark">Start learning</div></Link>
                 <Link to="/choose_type" state={{useCase: "add_words"}}><div className="item btn-outline-dark">Add words</div></Link>
+                <Link to="/change_word"><div className="item btn-outline-dark">Change or delete word</div></Link>
                 <Link to="/logout" onClick={logout}><div className="item btn-outline-danger">Logout</div></Link>
             </div>
         </div>
